@@ -73,21 +73,19 @@ public class StorePageGridViewAdapter extends BaseAdapter {
 			holder.frame = (FrameLayout) cell.findViewById(R.id.fram);
 			holder.image = (ImageView) cell.findViewById(R.id.storeImage);
 			holder.shopName = (TextView) cell.findViewById(R.id.storeName);
-
-			holder.shopName.setText(unit.getShop_name());
-			String imgPath = "http://" + Server.ip + "/server/store/"
-					+ unit.getEmail() + "/main.jpg";
-
 			holder.shopName.setTypeface(yoonGodic350);
-
-			Image.loadBitmap(imgPath, mContext, holder.image);
-			holder.image.setAlpha(50);
-			holder.shopName.setAlpha(20);
-
 			cell.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+
+		holder.shopName.setText(unit.getShop_name());
+		String imgPath = "http://" + Server.ip + "/server/store/"
+				+ unit.getEmail() + "/main.jpg";
+
+		Image.loadBitmap(imgPath, mContext, holder.image);
+		holder.image.setAlpha(50);
+		holder.shopName.setAlpha(20);
 
 		return cell;
 	}

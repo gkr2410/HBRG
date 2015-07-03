@@ -11,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.dongdong.R;
 
@@ -23,6 +25,9 @@ public class ReplyImageAdapter extends BaseAdapter {
 	public ReplyImageAdapter(ArrayList<Reply> replyList, Context c) {
 		super();
 		this.replyList = replyList;
+		if(replyList == null) {
+			this.replyList = new ArrayList<Reply>();
+		}
 		this.c = c;
 	}
 
@@ -44,11 +49,20 @@ public class ReplyImageAdapter extends BaseAdapter {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View retval = (View) LayoutInflater.from(c).inflate(R.layout.reply_hori_list_item,
-				null);
-		ImageView iv = (ImageView) retval.findViewById(R.id.image);
+		View retval = convertView;
+		ViewHolder holder;
 
-		iv.setLayoutParams(new LinearLayout.LayoutParams(180, 180));
+		if (retval == null) {
+			holder = new ViewHolder();
+			retval = (LinearLayout) LayoutInflater.from(c).inflate(
+					R.layout.reply_hori_list_item, null);
+			holder.image = (ImageView) retval.findViewById(R.id.image);
+			holder.image
+					.setLayoutParams(new LinearLayout.LayoutParams(180, 180));
+			retval.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+		}
 
 		String tmp = replyList.get(position).getDate();
 		String dateFolder = tmp.replace(":", "_");
@@ -60,7 +74,12 @@ public class ReplyImageAdapter extends BaseAdapter {
 
 		System.out.println("Img Path>> " + replyImgPath);
 
-		Image.loadReplyBitmap(replyImgPath, c, iv);
+		Image.loadReplyBitmap(replyImgPath, c, holder.image);
+
 		return retval;
+	}
+
+	class ViewHolder {
+		ImageView image;
 	}
 }

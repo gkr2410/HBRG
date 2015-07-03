@@ -306,12 +306,12 @@ public class NewDetailActivity extends Activity {
 		Query q = new Query();
 		q.send("select id, kind, silhouette, meterial, hashtag1, hashtag2, hashtag3, hashtag4, name, prive, count, content, discount_rate, shop_name, reg_date, like_cnt from clothes where ");
 
-		GetReplys gr = new GetReplys(158);
+		GetReplys gr = new GetReplys(id);
 		ArrayList<Reply> replyData = gr.execute();
 
-		for (int i = 0; i < replyData.size(); i++) {
-			System.out.println(replyData.get(i));
-		}
+//		for (int i = 0; i < replyData.size(); i++) {
+//			System.out.println(replyData.get(i));
+//		}
 
 		final ReplyImageAdapter ha = new ReplyImageAdapter(replyData,
 				getApplicationContext());

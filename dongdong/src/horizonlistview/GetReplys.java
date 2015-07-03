@@ -27,7 +27,10 @@ public class GetReplys {
 		}
 
 		tmp = Query.doParse(tmp);
-		
+		if (tmp == null) {
+			System.out.println("결과없음");
+			return null;
+		}
 		String forSplit[] = tmp.split("\n");
 		Reply reply = null;
 

@@ -31,6 +31,9 @@ public class ShopPageGridViewAdapter extends BaseAdapter {
 		mContext = c;
 		inflater = LayoutInflater.from(mContext);
 		itemList = st.getProducts();
+		if (itemList == null) {
+			itemList = new ArrayList<Product>();
+		}
 		height = mContext.getResources().getDisplayMetrics().densityDpi;
 	}
 
@@ -78,15 +81,16 @@ public class ShopPageGridViewAdapter extends BaseAdapter {
 			holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			cell.setTag(holder);
 
-			// <p>id,shopname,kind,name,</p>
-			String imgPath = "http://" + Server.ip + "/server/img/" + p.getShop_name() + "/"
-					+ p.getkind() + "/" + p.getname() + "/front.jpg";
-
-			Image.loadBitmap(imgPath, mContext, (ImageView) cell);
-
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+
+		// <p>id,shopname,kind,name,</p>
+		String imgPath = "http://" + Server.ip + "/server/img/"
+				+ p.getShop_name() + "/" + p.getkind() + "/" + p.getname()
+				+ "/front.jpg";
+
+		Image.loadBitmap(imgPath, mContext, (ImageView) cell);
 		return cell;
 	}
 
