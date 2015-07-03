@@ -2,6 +2,7 @@ package store;
 
 import image.Image;
 import product.Product;
+import query.Query;
 import query.Server;
 import searchtypes.SellerEmail;
 import shop.Shop;
@@ -33,6 +34,7 @@ public class StoreInfoActivity extends Activity {
 	ImageButton backBtn;
 	ImageView storeImageView;
 	Shop shop;
+	ShopPageGridViewAdapter spga;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +79,8 @@ public class StoreInfoActivity extends Activity {
 
 		gridView = (GridView) findViewById(R.id.gridView);
 
-		final ShopPageGridViewAdapter spga = new ShopPageGridViewAdapter(
-				new SellerEmail(shop.getEmail()), this);
+		spga = new ShopPageGridViewAdapter(new SellerEmail(shop.getEmail()),
+				this);
 
 		gridView.setAdapter(spga);
 
@@ -103,13 +105,28 @@ public class StoreInfoActivity extends Activity {
 
 		});
 
-		storeTitle.setText(shop.getShop_name());
-		storeLocation.setText(shop.getFloor() + "-" + shop.getUnit());
-		// storeInfo.setText(shop.getshopInfo()); //매장소개...내용 추가되면 넣기
-		storeProductNum.setText(spga.getCount() + "");
-		// storeFavoriteNum.setText("");
-//		storeTag.setText("");
+		setStoreInfo();
 
+	}
+
+	public void setStoreInfo() {
+		// storeTag.setText("");
+		storeTitle.setText(shop.getShop_name());
+		storeLocation.setText(shop.getFloor() + "F-" + shop.getUnit());
+		storeProductNum.setText(spga.getCount() + "");
+		storeInfo.setText(shop.getIntroduction()); // 매장소개...내용 추가되면 넣기
+
+		Query q = new Query();
+		String tmp = q
+				.send("select sum(like_cnt) from clothes where shop_email='"
+						+ shop.getEmail() + "';");
+		if (tmp == null) {
+			return;
+		}
+		String info = Query.doParse(tmp);
+		String likeCount = info.substring(3, info.length() - 5);
+
+		storeFavoriteNum.setText(likeCount);
 	}
 
 	@Override
